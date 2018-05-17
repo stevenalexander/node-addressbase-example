@@ -8,8 +8,8 @@ $(document).ready(function () {
       })
     ],
     view: new ol.View({
-      center: ol.proj.fromLonLat([37.41, 8.82]),
-      zoom: 4
+      center: ol.proj.fromLonLat([-3.53, 50.71]),
+      zoom: 9
     })
   })
   console.log(map)

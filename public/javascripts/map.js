@@ -1,19 +1,11 @@
-/* global $,ol */
-$(document).ready(function () {
-  var coord = getUrlParameter('coord')
-  var zoom = 9
-  var lon
-  var lat
-  if (coord) {
-    zoom = 15
-    lon = +coord.split(',')[0]
-    lat = +coord.split(',')[1]
-  } else {
-    lon = -3.53
-    lat = 50.71
-  }
+/* global $,ol,history */
+var map
+var view
 
-  var map = new ol.Map({
+$(document).ready(function () {
+  var coords = getCoordsFromUrl()
+
+  map = new ol.Map({
     target: 'map',
     layers: [
       new ol.layer.Tile({
@@ -21,14 +13,26 @@ $(document).ready(function () {
       })
     ],
     view: new ol.View({
-      center: ol.proj.fromLonLat([lon, lat]),
-      zoom: zoom
+      center: ol.proj.fromLonLat([coords.lon, coords.lat]),
+      zoom: coords.zoom
     })
   })
-  console.log(map)
+  view = map.getView()
+
+  var moveMap = function (lon, lat, zoom) {
+    view.setCenter(ol.proj.fromLonLat([lon, lat]))
+    view.setZoom(zoom)
+  }
+
+  $('.location').click(function (e) {
+    e.preventDefault()
+    history.pushState({}, '', this.href)
+    var coords = getCoordsFromUrl()
+    moveMap(coords.lon, coords.lat, coords.zoom)
+  })
 })
 
-var getUrlParameter = function getUrlParameter (sParam) {
+var getUrlParameter = function (sParam) {
   var sPageURL = decodeURIComponent(window.location.search.substring(1))
   var sURLVariables = sPageURL.split('&')
   var sParameterName
@@ -38,6 +42,23 @@ var getUrlParameter = function getUrlParameter (sParam) {
     sParameterName = sURLVariables[i].split('=')
     if (sParameterName[0] === sParam) {
       return sParameterName[1] === undefined ? true : sParameterName[1]
+    }
+  }
+}
+
+var getCoordsFromUrl = function () {
+  var coordParam = getUrlParameter('coord')
+  if (coordParam) {
+    return {
+      zoom: 15,
+      lon: +coordParam.split(',')[0],
+      lat: +coordParam.split(',')[1]
+    }
+  } else {
+    return {
+      zoom: 9,
+      lon: -3.53,
+      lat: 50.71
     }
   }
 }

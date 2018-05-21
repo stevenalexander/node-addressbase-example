@@ -2,3 +2,20 @@ extends layout
 
 block content
   div.map(id="map")
+  form(method="post")
+    div.form-group
+      label(for="searchText") Postcode
+      input.form-control(id="searchText", name="searchText", value=searchText)
+    div.form-group
+      button.btn.btn-default(type="submit") Submit
+
+  if locations
+    div.results
+      table.table
+        thead
+          th Location
+        tbody
+          each location in locations
+            tr
+              td
+                a.location(href='?coord=' + location.coordinatesString)=location.location

@@ -17,7 +17,8 @@ Requires:
 On a clean PostGres database with PostGIS extensions installed:
 
 ```
-# create schema
+# add postgis extensions and create schema
+psql -d MYDATABASENAME -c 'CREATE EXTENSION postgis;'
 psql -d MYDATABASENAME -c 'CREATE SCHEMA data_import;'
 
 # translate and import data from GML file
@@ -27,7 +28,7 @@ ogr2ogr -f "PostgreSQL" PG:"host=localhost port=5432 user=MYUSERNAME password=MY
 ### 2. Run Application
 
 ```
-# envs
+# envs (values for docker PostGIS)
 export PGHOST="localhost"
 export PGDATABASE="gis"
 export PGUSER="docker"
@@ -54,7 +55,11 @@ docker run --name "postgis" -p 5432:5432 -d -t kartoza/postgis:9.6-2.4
 
 ## Notes
 
+*Notes*
+* ogr2ogr arguments don't allow using a custom schema for PostGres, so need to use default schema name `data_import`
+
 *Useful info:*
 * Book - "Mastering PostGIS: Modern ways to create, analyze, and implement spatial" by Dominik Mikiewicz, Michal Mackiewicz, Tomasz Nycz
 * [GDAL - ogr2ogr format translator tools](http://www.gdal.org/)
 * [Blog - OS AddressBase and ogr2ogr](https://jonathanjstokes.wordpress.com/2014/04/02/os-addressbase-and-ogr2ogr/)
+* [Knex PostGIS extension](https://www.npmjs.com/package/knex-postgis) and [cheatsheet](http://www.g9labs.com/2016/04/08/knex-dot-js-and-bookshelf-dot-js-cheat-sheet/)

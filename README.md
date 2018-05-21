@@ -2,7 +2,7 @@
 
 Sample NodeJS application to consume [OS AddressBase](https://www.ordnancesurvey.co.uk/business-and-government/products/addressbase-products.html) data into a Database and provide a simple location lookup service displaying a searched location on a map.
 
-Uses the AddressBase plus sample file (available for download [here](https://www.ordnancesurvey.co.uk/business-and-government/products/addressbase-plus.html)), processes it into a PostGres database and uses it for location searches.
+Uses the AddressBase plus sample file (available for download [here](https://www.ordnancesurvey.co.uk/business-and-government/products/addressbase-plus.html)), processes it into a PostGres database and uses it for location searches. This file is limited to a section of Devon, use exact postcodes like 'EX2 9HD' to search.
 
 Requires:
 * NodeJS (v8+)
@@ -63,3 +63,9 @@ docker run --name "postgis" -p 5432:5432 -d -t kartoza/postgis:9.6-2.4
 * [GDAL - ogr2ogr format translator tools](http://www.gdal.org/)
 * [Blog - OS AddressBase and ogr2ogr](https://jonathanjstokes.wordpress.com/2014/04/02/os-addressbase-and-ogr2ogr/)
 * [Knex PostGIS extension](https://www.npmjs.com/package/knex-postgis) and [cheatsheet](http://www.g9labs.com/2016/04/08/knex-dot-js-and-bookshelf-dot-js-cheat-sheet/)
+
+*Possible enhancements*
+* Fulltext search on joined together address fields, e.g. match "COWICK" to "1 COWICK LANE..."
+* Use JQuery autocomplete to replace table results with AJAX driven dropdown
+* Allow prefixes on search to search specific address fields like UPRN and USRN, e.g. "UPRN:990040239484"
+* Try AddressBase Premium sample, which includes some street and lifecycle details
